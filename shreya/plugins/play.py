@@ -26,7 +26,8 @@ def playlist_to_queue(chat_id: int, tracks: list) -> str:
 async def log_all_messages(_, m: types.Message):
     logger.info(f"Message received: {m.text or m.caption or 'Media'} in chat {m.chat.id} from {m.from_user.id if m.from_user else 'System'}")
     # Continue propagation to allow other handlers to process the message
-    raise asyncio.CancelledError()
+    # Don't raise CancelledError - just return to let message propagate
+    return
 
 @app.on_message(
     filters.command(["play", "playforce", "vplay", "vplayforce"])
