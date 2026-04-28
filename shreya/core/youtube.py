@@ -109,7 +109,8 @@ class YouTube:
         api_type = "video" if video else "song"
         api_url = f"{config.API_URL}/{api_type}/{video_id}?api={config.API_KEY}"
         
-        async with aiohttp.ClientSession() as session:
+        timeout = aiohttp.ClientTimeout(total=15, connect=10)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
             try:
                 logger.info(f"Trying NexGen API for {video_id} ({api_type})")
                 for attempt in range(5):
@@ -158,7 +159,8 @@ class YouTube:
         api_type = "video" if video else "audio"
         api_url = f"{config.XBIT_API_URL}/{api_type}/{video_id}?api={config.XBIT_API_KEY}"
         
-        async with aiohttp.ClientSession() as session:
+        timeout = aiohttp.ClientTimeout(total=15, connect=10)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
             try:
                 logger.info(f"Trying xbit API for {video_id} ({api_type})")
                 async with session.get(api_url) as response:
