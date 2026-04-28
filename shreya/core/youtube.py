@@ -91,7 +91,21 @@ class YouTube:
         if Path(filename).exists():
             return filename
 
-        # Use NexGen API only (No fallback to yt-dlp)
+        # Try NexGen API first
+        result = await self._download_from_nexgen(video_id, video, filename)
+        if result:
+            return result
+
+        # Fallback to xbit API
+        result = await self._download_from_xbit(video_id, video, filename)
+        if result:
+            return result
+
+        logger.error(f"All APIs failed for {video_id}")
+        return None
+
+    async def _download_from_nexgen(self, video_id: str, video: bool, filename: str) -> str | None:
+        from shreya import config
         api_type = "video" if video else "song"
         api_url = f"{config.API_URL}/{api_type}/{video_id}?api={config.API_KEY}"
         
@@ -136,5 +150,50 @@ class YouTube:
                 logger.error(f"NexGen API failed after 5 attempts for {video_id}")
             except Exception as e:
                 logger.error(f"NexGen API failed for {video_id}: {e}", exc_info=True)
+        
+        return None
+
+    async def _download_from_xbit(self, video_id: str, video: bool, filename: str) -> str | None:
+        from shreya import config
+        api_type = "video" if video else "audio"
+        api_url = f"{config.XBIT_API_URL}/{api_type}/{video_id}?api={config.XBIT_API_KEY}"
+        
+        async with aiohttp.ClientSession() as session:
+            try:
+                logger.info(f"Trying xbit API for {video_id} ({api_type})")
+                async with session.get(api_url) as response:
+                    logger.info(f"xbit API response status: {response.status}")
+                    if response.status != 200:
+                        logger.error(f"xbit API returned status {response.status}")
+                        return None
+                    
+                    data = await response.json()
+                    status = data.get("status", "").lower()
+                    logger.info(f"xbit API status for {video_id}: {status}")
+
+                    if status == "success":
+                        # xbit returns audio_url or video_url
+                        url_key = "video_url" if video else "audio_url"
+                        download_url = data.get(url_key)
+                        logger.info(f"xbit API download link: {download_url}")
+                        
+                        if download_url:
+                            async with session.get(download_url) as file_response:
+                                if file_response.status == 200:
+                                    os.makedirs("downloads", exist_ok=True)
+                                    with open(filename, 'wb') as f:
+                                        while True:
+                                            chunk = await file_response.content.read(8192)
+                                            if not chunk:
+                                                break
+                                            f.write(chunk)
+                                    logger.info(f"Successfully downloaded via xbit: {filename}")
+                                    return filename
+                                else:
+                                    logger.error(f"Failed to download file from xbit: {file_response.status}")
+                    else:
+                        logger.error(f"xbit API failed with status: {status}, response: {data}")
+            except Exception as e:
+                logger.error(f"xbit API failed for {video_id}: {e}", exc_info=True)
         
         return None

@@ -40,6 +40,8 @@ class Config:
         self.COOKIES_FILE = getenv("COOKIES_FILE", None)
         self.API_URL = getenv("API_URL", "https://pvtz.nexgenbots.xyz")
         self.API_KEY = getenv("API_KEY", "NxGBNexGenBots08f955")
+        self.XBIT_API_URL = getenv("XBIT_API_URL", "https://tgapi.xbitcode.com")
+        self.XBIT_API_KEY = getenv("XBIT_API_KEY", "xbit_S1_5vcsAzQPL45W37DNuPVS4D9RoAKDr")
         self.DEFAULT_THUMB = getenv("DEFAULT_THUMB", "https://te.legra.ph/file/3e40a408286d4eda24191.jpg")
         self.PING_IMG = getenv("PING_IMG", "https://files.catbox.moe/haagg2.png")
         self.START_IMG = getenv("START_IMG", "https://i.ibb.co/LzSPPvK1/72d928954979411e1a77fd8c6611dbcd.jpg https://i.ibb.co/kg353Fqq/489d19473e5e268acfc611f5c343294f.jpg https://i.ibb.co/1fq59f2t/5085c37f435e4cbdc9deb7c9dbb16b44.jpg https://i.ibb.co/jk425GN9/7237ec0566e37f344c9767c042050a03.jpg https://i.ibb.co/LhYpwdHV/cebef20a181283bfc7edcb3cccafdb99.jpg https://i.ibb.co/G46PLZRK/Face-Photo-Pose.jpg").split()
