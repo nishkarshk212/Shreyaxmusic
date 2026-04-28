@@ -91,13 +91,13 @@ class YouTube:
         if Path(filename).exists():
             return filename
 
-        # Try NexGen API first
-        result = await self._download_from_nexgen(video_id, video, filename)
+        # Try xbit API first (primary)
+        result = await self._download_from_xbit(video_id, video, filename)
         if result:
             return result
 
-        # Fallback to xbit API
-        result = await self._download_from_xbit(video_id, video, filename)
+        # Fallback to NexGen API
+        result = await self._download_from_nexgen(video_id, video, filename)
         if result:
             return result
 
