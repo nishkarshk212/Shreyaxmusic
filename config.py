@@ -1,8 +1,14 @@
 from os import getenv
 from dotenv import load_dotenv
 
-load_dotenv()
-print(f"DEBUG: BOT_TOKEN from env: {getenv('BOT_TOKEN')}")
+import os
+load_dotenv(override=True)
+print(f"DEBUG: Current CWD: {os.getcwd()}")
+print(f"DEBUG: .env exists in CWD: {os.path.exists('.env')}")
+if os.path.exists('.env'):
+    with open('.env', 'r') as f:
+        print(f"DEBUG: .env content snippet: {f.read(50)}...")
+print(f"DEBUG: BOT_TOKEN from getenv: {os.getenv('BOT_TOKEN')}")
 
 class Config:
     def __init__(self):
