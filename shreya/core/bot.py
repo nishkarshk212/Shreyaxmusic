@@ -47,10 +47,6 @@ class Bot(pyrogram.Client):
 
         logger.info(f"Bot started as @{self.username}")
 
-    async def on_message(self, client, message):
-        logger.info(f"DEBUG: Message received in core bot: {message.text}")
-        await super().on_message(client, message)
-
     async def exit(self):
         """
         Asynchronously stops the bot.
