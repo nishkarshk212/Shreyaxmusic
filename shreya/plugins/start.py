@@ -30,15 +30,9 @@ async def list_groups(_, message: types.Message):
         groups = "No groups found."
     await message.reply_text(groups)
 
-@app.on_message(filters.command(["ping"]))
-async def ping_pong(_, message: types.Message):
-    await message.reply_text("Pong!")
-
 @app.on_message(filters.command(["start"]))
 @lang.language()
 async def start(_, message: types.Message):
-    logger.info(f"START HANDLER TRIGGERED in chat {message.chat.id} from user {message.from_user.id if message.from_user else 'None'}")
-    logger.info(f"Start command received in chat {message.chat.id} from user {message.from_user.id if message.from_user else 'None'}")
     try:
         if message.from_user and message.from_user.id in app.bl_users and message.from_user.id not in db.notified:
             return await message.reply_text(message.lang["bl_user_notify"])
