@@ -8,12 +8,8 @@ import asyncio
 
 from pyrogram import enums, errors, filters, types
 
-from shreya import anon, app, config, db, lang, queue, tasks, userbot, yt, logger
+from shreya import anon, app, config, db, lang, queue, tasks, userbot, yt
 from shreya.helpers import buttons
-
-@app.on_message(group=-1)
-async def log_all_updates(_, message: types.Message):
-    logger.info(f"GLOBAL UPDATE: {message.text or message.caption} from {message.from_user.id if message.from_user else 'None'} in {message.chat.id}")
 
 
 @app.on_message(filters.video_chat_started, group=19)
