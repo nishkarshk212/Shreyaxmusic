@@ -36,6 +36,7 @@ class Bot(pyrogram.Client):
         self.name = self.me.first_name
         self.username = self.me.username
         self.mention = self.me.mention
+        logger.info(f"DEBUG: Bot Token (first 5): {config.BOT_TOKEN[:5]}...")
 
         try:
             await self.send_message(self.logger, "Bot Started")
