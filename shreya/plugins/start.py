@@ -30,6 +30,10 @@ async def list_groups(_, message: types.Message):
         groups = "No groups found."
     await message.reply_text(groups)
 
+@app.on_message(filters.command(["ping"]))
+async def ping_pong(_, message: types.Message):
+    await message.reply_text("Pong!")
+
 @app.on_message(filters.command(["start"]))
 @lang.language()
 async def start(_, message: types.Message):

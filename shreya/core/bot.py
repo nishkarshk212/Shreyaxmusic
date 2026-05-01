@@ -44,7 +44,12 @@ class Bot(pyrogram.Client):
                 logger.warning("Please promote the bot as an admin in logger group.")
         except Exception as ex:
             logger.warning(f"Bot has failed to access the log group: {self.logger}\nReason: {ex}")
+
         logger.info(f"Bot started as @{self.username}")
+
+    async def on_message(self, client, message):
+        logger.info(f"DEBUG: Message received in core bot: {message.text}")
+        await super().on_message(client, message)
 
     async def exit(self):
         """
