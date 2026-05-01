@@ -36,7 +36,7 @@ class Bot(pyrogram.Client):
         self.name = self.me.first_name
         self.username = self.me.username
         self.mention = self.me.mention
-        logger.info(f"DEBUG: Bot Token (first 5): {config.BOT_TOKEN[:5]}...")
+        logger.info(f"DEBUG: FULL ME: {self.me}")
 
         try:
             await self.send_message(self.logger, "Bot Started")
@@ -46,6 +46,10 @@ class Bot(pyrogram.Client):
         except Exception as ex:
             logger.warning(f"Bot has failed to access the log group: {self.logger}\nReason: {ex}")
         logger.info(f"Bot started as @{self.username}")
+
+    @pyrogram.Client.on_message()
+    async def log_messages(self, client, message):
+        logger.info(f"RECEIVED MESSAGE: {message.text} from {message.from_user.id if message.from_user else 'None'} in {message.chat.id}")
 
     async def exit(self):
         """
