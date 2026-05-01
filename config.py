@@ -2,6 +2,7 @@ from os import getenv
 from dotenv import load_dotenv
 
 load_dotenv()
+print(f"DEBUG: BOT_TOKEN from env: {getenv('BOT_TOKEN')}")
 
 class Config:
     def __init__(self):
